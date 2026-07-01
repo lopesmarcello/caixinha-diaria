@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cofrinho
 
-## Getting Started
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16.2.9-black?style=for-the-badge" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React-19.2.4-61dafb?style=for-the-badge" alt="React" />
+  <img src="https://img.shields.io/badge/Supabase-Auth%20%2B%20DB-3ecf8e?style=for-the-badge" alt="Supabase" />
+</p>
 
-First, run the development server:
+<p align="center">
+  Um desafio de economia pessoal para trocar impulso por consistência.
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Contexto
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O Brasil vive uma crise financeira que não é só sobre números. Ela aparece no cansaço, na ansiedade e na perda de perspectiva de quem vê o dinheiro escapar para dívidas, consumo impulsivo e apostas online.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Uma aposta promete transformar pouco em muito. Na prática, ela quase sempre transforma esperança em perda.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Cofrinho nasce para oferecer outra escolha:
 
-## Learn More
+- o dinheiro continua sob controle do usuário
+- o progresso fica visível todos os dias
+- o objetivo final deixa de ser sorte e passa a ser disciplina
 
-To learn more about Next.js, take a look at the following resources:
+## O que é
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Cofrinho é um app de desafio de poupança. Cada `caixinha` funciona como uma meta pessoal com começo, meio e fim.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Fluxo do desafio
 
-## Deploy on Vercel
+| Etapa | Ação | Resultado |
+| --- | --- | --- |
+| 1 | Criar uma caixinha | Definir nome e duração |
+| 2 | Sortear o número do dia | Escolher o valor a guardar |
+| 3 | Depositar o valor sorteado | Registrar progresso real |
+| 4 | Acompanhar a jornada | Ver o avanço até concluir |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Em vez de apostar, o usuário:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Aposta | Cofrinho |
+| --- | --- |
+| Entrega o dinheiro para a promessa | Mantém o dinheiro sob controle |
+| Vive de expectativa | Acompanha progresso concreto |
+| Depende de sorte | Depende de consistência |
+| Persegue ganho rápido | Constrói resultado de longo prazo |
+
+## Destaques
+
+- Desafios de poupança com sorteio diário
+- Acompanhamento de progresso por valor e por dia
+- Grade visual com números concluídos, pendentes e sorteados
+- Criação de várias caixinhas
+- Desfazer o último depósito
+- Autenticação com Supabase
+- Celebração visual ao concluir a meta
+
+## Como funciona
+
+1. A pessoa cria uma caixinha com nome e quantidade de dias.
+2. O app sorteia o valor que deve ser guardado naquele dia.
+3. O usuário faz o depósito do valor sorteado.
+4. O sistema atualiza o progresso e mostra o avanço acumulado.
+5. Ao completar a meta, o app encerra o desafio com uma celebração.
+
+## Por que isso importa
+
+O valor principal do Cofrinho não está em esconder dinheiro do usuário. Está no oposto:
+
+- reforçar autonomia
+- tornar o futuro mais concreto
+- reduzir a dependência de impulso e recompensa imediata
+- transformar economia em um hábito visível e possível
+
+## Stack
+
+- [Next.js](https://nextjs.org/)
+- [React](https://react.dev/)
+- [Supabase](https://supabase.com/)
+- [SWR](https://swr.vercel.app/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- `canvas-confetti`
+
+## Direção de produto
+
+Este projeto foi escrito para soar como uma alternativa real à lógica de aposta. O tom deve continuar direto, humano e orientado a autonomia: menos hype, mais clareza; menos promessa, mais controle.
+

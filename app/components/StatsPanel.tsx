@@ -34,14 +34,13 @@ export default function StatsPanel({
   }
 
   return (
-    <div className="rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
-      <dl className="grid grid-cols-2 gap-4 text-sm">
-        <div>
-          <dt className="text-zinc-500 dark:text-zinc-400">Montante atual</dt>
-          <dd className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-            {formatBRL(montanteAtual)}
-          </dd>
-        </div>
+    <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+      <p className="text-sm text-zinc-500 dark:text-zinc-400">Montante atual</p>
+      <p className="text-3xl font-bold text-teal-600 dark:text-teal-400">
+        {formatBRL(montanteAtual)}
+      </p>
+
+      <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-zinc-100 pt-4 text-sm dark:border-zinc-800">
         <div>
           <dt className="text-zinc-500 dark:text-zinc-400">Montante previsto</dt>
           <dd className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">

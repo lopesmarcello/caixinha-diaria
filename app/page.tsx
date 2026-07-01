@@ -1,11 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import CaixinhaCard from "./components/CaixinhaCard";
 import CreateCaixinhaModal from "./components/CreateCaixinhaModal";
+import OnboardingModal from "./components/OnboardingModal";
+import OnboardingTooltip from "./components/OnboardingTooltip";
 import { fetcher } from "@/lib/fetcher";
+import { createClient } from "@/lib/supabase/client";
 import type { CaixinhaWithStats } from "@/lib/queries";
+
+export type OnboardingStep =
+  | "none"
+  | "intro"
+  | "cta"
+  | "name"
+  | "days"
+  | "preview"
+  | "success";
 
 export default function Home() {
   const { data, isLoading, mutate } = useSWR<CaixinhaWithStats[]>(
@@ -13,9 +25,42 @@ export default function Home() {
     fetcher
   );
   const [showModal, setShowModal] = useState(false);
+  const [onboardingStep, setOnboardingStep] = useState<OnboardingStep>("none");
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user && !user.user_metadata?.has_onboarded) {
+        setOnboardingStep("intro");
+      }
+    });
+  }, []);
+
+  async function handleCloseIntro() {
+    setOnboardingStep("cta");
+    const supabase = createClient();
+    await supabase.auth.updateUser({ data: { has_onboarded: true } });
+  }
+
+  function handleOpenModal() {
+    setShowModal(true);
+    if (onboardingStep === "cta") {
+      setOnboardingStep("name");
+    }
+  }
+
+  async function handleDelete(id: number) {
+    await fetch(`/api/caixinhas/${id}`, { method: "DELETE" });
+    mutate();
+  }
 
   const active = data?.filter((c) => c.status === "active") ?? [];
   const completed = data?.filter((c) => c.status === "completed") ?? [];
+  const isOnboardingCreation =
+    onboardingStep === "name" ||
+    onboardingStep === "days" ||
+    onboardingStep === "preview" ||
+    onboardingStep === "success";
 
   return (
     <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
@@ -24,8 +69,8 @@ export default function Home() {
           Minhas caixinhas
         </h1>
         <button
-          onClick={() => setShowModal(true)}
-          className="h-12 rounded-xl bg-amber-500 px-5 font-medium text-white transition hover:bg-amber-600"
+          onClick={handleOpenModal}
+          className="h-12 rounded-xl bg-teal-500 px-5 font-medium text-white transition hover:bg-teal-600"
         >
           Nova caixinha
         </button>
@@ -41,19 +86,24 @@ export default function Home() {
           <p className="text-zinc-600 dark:text-zinc-400">
             Você ainda não tem nenhuma caixinha.
           </p>
-          <button
-            onClick={() => setShowModal(true)}
-            className="h-12 rounded-xl bg-amber-500 px-5 font-medium text-white transition hover:bg-amber-600"
+          <OnboardingTooltip
+            show={onboardingStep === "cta"}
+            text="Clique aqui para começar!"
           >
-            Criar minha primeira caixinha
-          </button>
+            <button
+              onClick={handleOpenModal}
+              className="h-12 rounded-xl bg-teal-500 px-5 font-medium text-white transition hover:bg-teal-600"
+            >
+              Criar minha primeira caixinha
+            </button>
+          </OnboardingTooltip>
         </div>
       )}
 
       {active.length > 0 && (
         <div className="mt-8 flex flex-col gap-3">
           {active.map((c) => (
-            <CaixinhaCard key={c.id} caixinha={c} />
+            <CaixinhaCard key={c.id} caixinha={c} onDelete={handleDelete} />
           ))}
         </div>
       )}
@@ -65,19 +115,29 @@ export default function Home() {
           </h2>
           <div className="mt-3 flex flex-col gap-3">
             {completed.map((c) => (
-              <CaixinhaCard key={c.id} caixinha={c} />
+              <CaixinhaCard key={c.id} caixinha={c} onDelete={handleDelete} />
             ))}
           </div>
         </div>
       )}
 
+      {onboardingStep === "intro" && <OnboardingModal onClose={handleCloseIntro} />}
+
       {showModal && (
         <CreateCaixinhaModal
-          onClose={() => setShowModal(false)}
+          onClose={() => {
+            setShowModal(false);
+            if (isOnboardingCreation) setOnboardingStep("none");
+          }}
           onCreated={() => {
             setShowModal(false);
             mutate();
           }}
+          onboarding={
+            isOnboardingCreation
+              ? { step: onboardingStep, onAdvance: setOnboardingStep }
+              : undefined
+          }
         />
       )}
     </div>

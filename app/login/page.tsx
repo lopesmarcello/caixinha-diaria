@@ -22,7 +22,7 @@ export default function LoginPage() {
             name="email"
             required
             autoComplete="email"
-            className="h-12 rounded-xl border border-zinc-300 px-4 text-base text-zinc-900 outline-none focus:border-amber-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
+            className="h-12 rounded-xl border border-zinc-300 px-4 text-base text-zinc-900 outline-none focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
           />
         </label>
 
@@ -33,7 +33,7 @@ export default function LoginPage() {
             name="password"
             required
             autoComplete="current-password"
-            className="h-12 rounded-xl border border-zinc-300 px-4 text-base text-zinc-900 outline-none focus:border-amber-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
+            className="h-12 rounded-xl border border-zinc-300 px-4 text-base text-zinc-900 outline-none focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
           />
         </label>
 
@@ -44,7 +44,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={pending}
-          className="h-12 rounded-xl bg-amber-500 font-medium text-white transition hover:bg-amber-600 disabled:opacity-60"
+          className="h-12 rounded-xl bg-teal-500 font-medium text-white transition hover:bg-teal-600 disabled:opacity-60"
         >
           {pending ? "Entrando..." : "Entrar"}
         </button>
@@ -52,7 +52,7 @@ export default function LoginPage() {
 
       <p className="mt-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
         Não tem uma conta?{" "}
-        <Link href="/signup" className="font-medium text-amber-600 hover:underline dark:text-amber-400">
+        <Link href="/signup" className="font-medium text-teal-600 hover:underline dark:text-teal-400">
           Criar conta
         </Link>
       </p>

@@ -50,12 +50,12 @@ export default function DrawSection({
   }
 
   return (
-    <div className="flex flex-col items-center gap-4 rounded-2xl bg-amber-50 p-6 text-center dark:bg-amber-950">
+    <div className="flex flex-col items-center gap-4 rounded-2xl p-6 text-center">
       {drawnValue === null ? (
         <button
           onClick={handleDraw}
           disabled={busy !== null}
-          className="h-12 w-full max-w-xs rounded-xl bg-amber-500 px-6 font-medium text-white transition hover:bg-amber-600 disabled:opacity-60"
+          className="h-12 w-full max-w-xs rounded-xl bg-teal-500 px-6 font-medium text-white transition hover:bg-teal-600 disabled:opacity-60"
         >
           {busy === "draw" ? "Sorteando..." : "Sortear o número de hoje"}
         </button>

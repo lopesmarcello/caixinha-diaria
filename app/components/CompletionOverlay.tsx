@@ -42,7 +42,7 @@ export default function CompletionOverlay({
         <div className="mt-6 flex flex-col gap-3">
           <button
             onClick={onClose}
-            className="h-12 rounded-xl bg-amber-500 font-medium text-white transition hover:bg-amber-600"
+            className="h-12 rounded-xl bg-teal-500 font-medium text-white transition hover:bg-teal-600"
           >
             Ver detalhes
           </button>

@@ -12,7 +12,7 @@ export default function NumberGrid({
   const numbers = Array.from({ length: totalDays }, (_, i) => i + 1);
 
   return (
-    <div className="grid grid-cols-8 gap-1.5 sm:grid-cols-10">
+    <div className="grid grid-cols-10 gap-1 sm:grid-cols-12">
       {numbers.map((n) => {
         const isDeposited = depositedValues.has(n);
         const isDrawn = n === drawnValue;
@@ -21,7 +21,7 @@ export default function NumberGrid({
           <div
             key={n}
             className={[
-              "flex aspect-square items-center justify-center rounded-lg font-mono text-xs font-medium sm:text-sm",
+              "flex aspect-square items-center justify-center rounded-md font-mono text-[10px] font-medium sm:text-xs",
               isDrawn
                 ? "animate-pulse border-2 border-amber-500 bg-amber-200 text-amber-900 dark:bg-amber-500/30 dark:text-amber-200"
                 : isDeposited

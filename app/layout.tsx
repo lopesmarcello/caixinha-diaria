@@ -44,7 +44,7 @@ export default async function RootLayout({
             <form action={logout}>
               <button
                 type="submit"
-                className="text-sm font-medium text-amber-600 hover:underline dark:text-amber-400"
+                className="text-sm font-medium text-teal-600 hover:underline dark:text-teal-400"
               >
                 Sair
               </button>

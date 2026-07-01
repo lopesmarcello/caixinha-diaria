@@ -9,8 +9,9 @@ Webapp mobile-first para rastrear desafios de poupança diária. O usuário cria
 ## Stack
 
 - **Framework:** Next.js (App Router, TypeScript)
-- **Banco de dados:** SQLite via `better-sqlite3` (arquivo local `data/cofrinho.db`)
-- **ORM/Query builder:** SQL direto com `better-sqlite3` (sem ORM, evitar complexidade)
+- **Banco de dados:** Supabase (Postgres hospedado), Row Level Security por `user_id`
+- **Query builder:** `@supabase/supabase-js` direto (sem ORM, evitar complexidade)
+- **Autenticação:** Supabase Auth, email + senha (ver `supabase/schema.sql` e `proxy.ts`)
 - **Estilo:** Tailwind CSS (já configurado no projeto)
 - **Estado client-side:** React state + SWR para revalidação
 
@@ -341,7 +342,9 @@ export const db = globalForDb._db ?? (globalForDb._db = getDb());
 
 ## Itens Fora do Escopo (v1)
 
-- Autenticação / múltiplos usuários
+- Recuperação de senha / "esqueci minha senha"
+- Confirmação de email no cadastro (desativada no Supabase para simplificar o fluxo)
+- Login social (OAuth), MFA
 - Notificações push para lembrar de depositar
 - Histórico de reroles
 - Exportar dados

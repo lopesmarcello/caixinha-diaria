@@ -177,6 +177,20 @@ export async function deleteCaixinha(
 
 type NotFound = { error: "not_found" };
 
+async function setDrawnValue(
+  supabase: SupabaseClient,
+  userId: string,
+  id: number,
+  value: number
+): Promise<void> {
+  const { error } = await supabase
+    .from("caixinhas")
+    .update({ drawn_value: value })
+    .eq("id", id)
+    .eq("user_id", userId);
+  if (error) throw error;
+}
+
 export async function drawNumber(
   supabase: SupabaseClient,
   userId: string,
@@ -190,14 +204,27 @@ export async function drawNumber(
   if (available.length === 0) return { error: "no_numbers_available" };
 
   const drawn = available[Math.floor(Math.random() * available.length)];
-  const { error } = await supabase
-    .from("caixinhas")
-    .update({ drawn_value: drawn })
-    .eq("id", id)
-    .eq("user_id", userId);
-  if (error) throw error;
+  await setDrawnValue(supabase, userId, id, drawn);
 
   return { drawn_value: drawn };
+}
+
+export async function selectNumber(
+  supabase: SupabaseClient,
+  userId: string,
+  id: number,
+  value: number
+): Promise<{ drawn_value: number } | NotFound | { error: "number_unavailable" }> {
+  const caixinha = await getCaixinha(supabase, userId, id);
+  if (!caixinha) return { error: "not_found" };
+
+  const depositValues = await getDepositValues(supabase, id);
+  const available = getAvailableNumbers(caixinha.total_days, depositValues);
+  if (!available.includes(value)) return { error: "number_unavailable" };
+
+  await setDrawnValue(supabase, userId, id, value);
+
+  return { drawn_value: value };
 }
 
 export async function confirmDeposit(

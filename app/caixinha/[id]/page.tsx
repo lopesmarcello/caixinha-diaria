@@ -26,6 +26,15 @@ export default function CaixinhaPage() {
     await mutate();
   }
 
+  async function handleSelect(value: number) {
+    await fetch(`/api/caixinhas/${params.id}/select`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ value }),
+    });
+    await mutate();
+  }
+
   async function handleDeposit() {
     await fetch(`/api/caixinhas/${params.id}/deposit`, { method: "POST" });
     setDismissedCompletion(false);
@@ -90,13 +99,21 @@ export default function CaixinhaPage() {
       </div>
 
       <div className="mt-6">
-        <p className="mb-2 text-xs font-medium uppercase tracking-wide text-zinc-400 dark:text-zinc-500">
-          Números
-        </p>
+        <div className="mb-2">
+          <p className="text-xs font-medium uppercase tracking-wide text-zinc-400 dark:text-zinc-500">
+            Números
+          </p>
+          {data.available_count > 0 && (
+            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              Prefere não deixar para a sorte? Toque em um número disponível para escolher ele.
+            </p>
+          )}
+        </div>
         <NumberGrid
           totalDays={data.total_days}
           depositedValues={depositedValues}
           drawnValue={data.drawn_value}
+          onSelect={data.available_count > 0 ? handleSelect : undefined}
         />
       </div>
 

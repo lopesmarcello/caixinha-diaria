@@ -22,14 +22,15 @@ export default function CreateCaixinhaModal({
 }) {
   const router = useRouter();
   const [name, setName] = useState("");
-  const [totalDays, setTotalDays] = useState(100);
+  const [totalDaysInput, setTotalDaysInput] = useState("100");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const previewTotal = Number.isFinite(totalDays) && totalDays > 0
-    ? (totalDays * (totalDays + 1)) / 2
-    : 0;
+  // NaN enquanto o campo está vazio — só vira número na validação/envio.
+  const totalDays = totalDaysInput === "" ? NaN : Number(totalDaysInput);
+  const isValidDays = Number.isInteger(totalDays) && totalDays > 0;
+  const previewTotal = isValidDays ? (totalDays * (totalDays + 1)) / 2 : 0;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -39,7 +40,7 @@ export default function CreateCaixinhaModal({
       setError("Informe um nome para a caixinha.");
       return;
     }
-    if (!Number.isInteger(totalDays) || totalDays < 1 || totalDays > 365) {
+    if (!isValidDays || totalDays < 1 || totalDays > 365) {
       setError("O número de dias deve ser um inteiro entre 1 e 365.");
       return;
     }
@@ -127,14 +128,17 @@ export default function CreateCaixinhaModal({
                   </span>
                   <input
                     type="number"
+                    inputMode="numeric"
                     min={1}
                     max={365}
-                    value={totalDays}
+                    value={totalDaysInput}
                     onFocus={() => {
                       if (onboarding?.step === "name") onboarding.onAdvance("days");
                     }}
                     onChange={(e) => {
-                      setTotalDays(Number(e.target.value));
+                      // Só dígitos, sem zeros à esquerda: evita "0" grudado ao esvaziar o campo.
+                      const digits = e.target.value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
+                      setTotalDaysInput(digits === "0" ? "" : digits);
                       if (onboarding?.step === "days") onboarding.onAdvance("preview");
                     }}
                     className="h-12 rounded-xl border border-zinc-300 px-4 text-base text-zinc-900 outline-none focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
@@ -148,7 +152,7 @@ export default function CreateCaixinhaModal({
               >
                 <p className="rounded-xl bg-teal-50 px-4 py-3 text-sm text-teal-800 dark:bg-teal-950 dark:text-teal-300">
                   Você vai guardar até <strong>{formatBRL(previewTotal)}</strong> em{" "}
-                  {totalDays || 0} dias.
+                  {isValidDays ? totalDays : 0} dias.
                 </p>
               </OnboardingTooltip>
 

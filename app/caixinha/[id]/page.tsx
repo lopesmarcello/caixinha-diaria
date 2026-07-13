@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useSWR from "swr";
 import DrawSection from "@/app/components/DrawSection";
@@ -20,6 +20,7 @@ export default function CaixinhaPage() {
   );
   const [dismissedCompletion, setDismissedCompletion] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const drawSectionRef = useRef<HTMLDivElement>(null);
 
   async function handleDraw() {
     await fetch(`/api/caixinhas/${params.id}/draw`, { method: "POST" });
@@ -33,6 +34,9 @@ export default function CaixinhaPage() {
       body: JSON.stringify({ value }),
     });
     await mutate();
+    // O número escolhido e o botão de depositar ficam acima da grade — no celular
+    // eles estão fora da tela na hora do toque.
+    drawSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   async function handleDeposit() {
@@ -76,7 +80,7 @@ export default function CaixinhaPage() {
         {data.name}
       </h1>
 
-      <div className="mt-6">
+      <div ref={drawSectionRef} className="mt-6 scroll-mt-4">
         <DrawSection
           drawnValue={data.drawn_value}
           availableCount={data.available_count}
